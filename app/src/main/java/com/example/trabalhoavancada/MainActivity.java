@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DataReader dataReader = new DataReader();
     private DataSaver dataSaver = new DataSaver();
-    private TextView tvLatitude,tvLongitude,tvTempo,tvDistanciaPercorrida,tvTimeDifference;
+    private TextView tvLatitude,tvLongitude,tvTempo,tvDistanciaPercorrida,tvTimeDifference, tvTravelTime;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         tvTempo = (TextView)findViewById(R.id.tempo);
         tvDistanciaPercorrida = (TextView)findViewById(R.id.distanciaPercorrida);
         tvTimeDifference = (TextView)findViewById(R.id.timeDifference);
+        tvTravelTime = (TextView)findViewById(R.id.tvTravelTime);
 
 
 
@@ -55,12 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void getLocation(View view) throws InterruptedException {
-
-
-        DadosGps dado = m.adiquire();
-        dataSaver.saveData(this,dado);
-
-
+        ThreadDataSaver threadDataSaver = new ThreadDataSaver(this);
+        threadDataSaver.start();
 
     }
 
@@ -68,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         loc.iniciaLocalizacao(this);
         dataReader.deleteData(this);
+        g.SetTempoInico(System.currentTimeMillis());
 
     }
 
@@ -80,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         double longitude = d.getLongitude();
         long tempo = d.getTime();
         Long temp = g.calculateTimeDifference();
+        long travelTime = g.calculaTempoDeslocamento();
         tvLatitude.setText(String.valueOf(latitude));
         tvLongitude.setText(String.valueOf(longitude));
         tvTempo.setText(String.valueOf(tempo));

@@ -8,19 +8,19 @@
     tools:context=".SecondActivity">
 
     <TextView
-        android:id="@+id/textViewAverageSpeed"
+        android:id="@+id/velMedia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Velocidade Média: " />
 
     <TextView
-        android:id="@+id/textViewTravelTime"
+        android:id="@+id/tvTravelTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tempo de Deslocamento: " />
 
     <TextView
-        android:id="@+id/textViewDistance"
+        android:id="@+id/travelDistance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Distância Percorrida: " />
@@ -38,7 +38,7 @@
         android:text="Tempo para chegar ao destino: " />
 
     <TextView
-        android:id="@+id/textViewRecommendedSpeed"
+        android:id="@+id/velRecomendada"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Velocidade recomendada: " />

@@ -35,6 +35,7 @@ public class Localizacao extends AppCompatActivity{
     private MemComp shMem = new MemComp();
 
 
+
     private long temp;
     private String tempo;
 
@@ -55,7 +56,7 @@ public class Localizacao extends AppCompatActivity{
                 while (chave) {
                     try {
                         getLocation();
-                        Thread.sleep(1000);//
+                        Thread.sleep(500);//
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
