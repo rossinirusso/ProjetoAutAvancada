@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".SecondActivity">
+
+    <TextView
+        android:id="@+id/textViewAverageSpeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Velocidade Média: " />
+
+    <TextView
+        android:id="@+id/textViewTravelTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tempo de Deslocamento: " />
+
+    <TextView
+        android:id="@+id/textViewDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Distância Percorrida: " />
+
+    <TextView
+        android:id="@+id/textViewFuelConsumption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Consumo de Combustível: " />
+
+    <TextView
+        android:id="@+id/textViewTimeToDestination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tempo para chegar ao destino: " />
+
+    <TextView
+        android:id="@+id/textViewRecommendedSpeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Velocidade recomendada: " />
+
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="VoltaTelaPrincipal"
+        android:text="Voltar" />
+
+    <Button
+        android:id="@+id/buttonRecalculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recalcular" />
+
+</LinearLayout>
