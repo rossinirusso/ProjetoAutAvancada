@@ -26,13 +26,13 @@
         android:text="Distância Percorrida: " />
 
     <TextView
-        android:id="@+id/textViewFuelConsumption"
+        android:id="@+id/tvConsumo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Consumo de Combustível: " />
 
     <TextView
-        android:id="@+id/textViewTimeToDestination"
+        android:id="@+id/timeDifference"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tempo para chegar ao destino: " />

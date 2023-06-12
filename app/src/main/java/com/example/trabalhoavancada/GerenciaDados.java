@@ -15,13 +15,30 @@ public class GerenciaDados {
     private DataReader dataReader = new DataReader();
 
     private static final int RAIO_TERRA = 6371;
-    private long tempoIncio;
+    private static long tempoIncio;
 
-    private double distanciaTotal = 100.00; //em km
-    private long tempoDesejado =  3600000; //em hora
+    private static double distanciaTotal; //em km
+    private static long tempoDesejado; //em hora
 
-    public void SetTempoInico(long tempoInico){
-        this.tempoIncio = tempoInico;
+    public synchronized boolean VerificaPilha(){
+        if(dados.size()>1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public synchronized void SetTempoInico(long tempoIncio){
+        this.tempoIncio = tempoIncio;
+    }
+
+    public synchronized void SetDistanciaTotal(double distanciaTotal){
+        this.distanciaTotal = distanciaTotal;
+    }
+
+    public synchronized void SetTempoDesejado(long tempoDesejado){
+        this.tempoDesejado = (tempoDesejado*(60*60));
     }
 
     public synchronized void SalvaDados(Stack<Dados> dados) {
@@ -33,7 +50,7 @@ public class GerenciaDados {
     }
 
 
-    public double calcularDistancia() {
+    public synchronized double calcularDistancia() {
         Dados ponto1 = dados.pop();
         Dados ponto2 = dados.peek();
         dados.push(ponto1);
@@ -60,31 +77,27 @@ public class GerenciaDados {
                         Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return RAIO_TERRA * c;
+        return RAIO_TERRA * c; // km
     }
 
 
-    public long calculateTimeDifference() {
-        Dados ponto1 = dados.pop();
-        Dados ponto2 = dados.peek();
-        dados.push(ponto1);
-
-        long startTime = ponto1.getTime();
-         long endTime = ponto2.getTime();
-        return Math.abs(endTime - startTime)/1000;
+    public synchronized double calculateTimeDifference() {
+        double tempoDisp = (tempoDesejado - calculaTempoDeslocamento());
+        return tempoDisp/(60); //em minutos;
     }
 
-    public double calculaVelocidadeAtual(){
-        return (double) (calcularDistancia()/calculateTimeDifference());
+    public synchronized double calculaVelocidadeAtual(){
+        return (double) (calcularDistancia()/(calculateTimeDifference()/1000*60*60));
     }
 
-    public long calculaTempoDeslocamento(){
+
+    public synchronized long calculaTempoDeslocamento(){
         Dados ponto = dados.peek();
         long tempoAtual = ponto.getTime();
-        return (tempoAtual - tempoIncio)/1000;
+        return (tempoAtual - tempoIncio)/(1000); //em seg
     }
 
-    public double calculaDistanciaTotalPercorrida(){
+    public synchronized double calculaDistanciaTotalPercorrida(){
         Dados ponto1 = dados.get(0);
         Dados ponto2 = dados.peek();
 
@@ -110,29 +123,40 @@ public class GerenciaDados {
                         Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return RAIO_TERRA * c;
+        return (RAIO_TERRA * c);
 
     }
 
-    public double CalculaVelocidadeMedia(){
-        return (double) calculaDistanciaTotalPercorrida()/calculaTempoDeslocamento();
+    public synchronized double CalculaVelocidadeMedia(){
+        double distancia = calculaDistanciaTotalPercorrida();
+        double tempo = (double)calculaTempoDeslocamento()/(60*60);
+        if(distancia==0){
+            return 0.0;
+        }
+        else{
+            double v = distancia / tempo;
+            return v;
+        }
+
+        //return (double) calculaDistanciaTotalPercorrida()/((calculaTempoDeslocamento()/(60*60)));
 
     }
 
-    public double VelocidadeRecomendada(){
+    public synchronized double VelocidadeRecomendada(){
         if(dados.size()>1) {
             double distanciaFalta = distanciaTotal - calculaDistanciaTotalPercorrida();
-            long tempoDisp = tempoDesejado - calculaTempoDeslocamento();
+            double tempoDisp = (tempoDesejado - calculaTempoDeslocamento());
+            tempoDisp = tempoDisp/(60*60);
             return distanciaFalta/tempoDisp;
         }
 
         else{
-            distanciaTotal = distanciaTotal / 1000;
-            tempoIncio = tempoIncio / (1000 * 60 * 60);
-            return distanciaTotal / tempoIncio;
+            //tempoIncio = tempoIncio / (60 * 60);
+            return distanciaTotal / (tempoDesejado/(60*60));
         }
 
     }
+
 
 
 

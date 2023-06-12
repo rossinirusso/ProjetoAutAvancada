@@ -9,11 +9,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.trabalhoavancada.getcurrentlatitudeandlongitudeandroid.GpsTracker;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,19 +23,25 @@ public class MainActivity extends AppCompatActivity {
 
     private DataReader dataReader = new DataReader();
     private DataSaver dataSaver = new DataSaver();
-    private TextView tvLatitude,tvLongitude,tvTempo,tvDistanciaPercorrida,tvTimeDifference, tvTravelTime;
+    private TextView tvLatitude,tvLongitude,tvTempo,tvDistanciaPercorrida,tvTimeDifference, tvTravelTime, tvVelMedia, tvTravelDistance, tvVelRecomendada;;
+    private EditText edDistancia, edConsumo, edTempo;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvLatitude = (TextView)findViewById(R.id.latitude);
-        tvLongitude = (TextView)findViewById(R.id.longitude);
-        tvTempo = (TextView)findViewById(R.id.tempo);
-        tvDistanciaPercorrida = (TextView)findViewById(R.id.distanciaPercorrida);
+        //tvLatitude = (TextView)findViewById(R.id.latitude);
+        //tvLongitude = (TextView)findViewById(R.id.longitude);
+        //tvTempo = (TextView)findViewById(R.id.);
         tvTimeDifference = (TextView)findViewById(R.id.timeDifference);
-        tvTravelTime = (TextView)findViewById(R.id.tvTravelTime);
+        tvTravelTime = (TextView)findViewById(R.id.TextViewTempoAndou);
+        tvVelMedia =(TextView)findViewById(R.id.textViewVelMedia);
+        tvTravelDistance = (TextView)findViewById(R.id.distanciaPercorrida);
+        tvVelRecomendada = (TextView)findViewById(R.id.textViewVelRecomendada);
+        edDistancia = (EditText)findViewById(R.id.editTextDistance);
+        edConsumo = (EditText)findViewById(R.id.editConsumo);
+        edTempo = (EditText)findViewById(R.id.editTextTravelTime);
 
 
 
@@ -67,23 +72,14 @@ public class MainActivity extends AppCompatActivity {
         dataReader.deleteData(this);
         g.SetTempoInico(System.currentTimeMillis());
 
+        g.SetDistanciaTotal(getDecimalFromEditText(edDistancia));
+        g.SetTempoDesejado(getLongFromEditText(edTempo));
+
     }
 
     public void MostraDados(View v){
-        g.SalvaDados(dataReader.readData(this));
-        Dados d = g.GetDado();
-        double distanciaPercorrida = g.calcularDistancia();
-
-        double latitude = d.getLatitude();
-        double longitude = d.getLongitude();
-        long tempo = d.getTime();
-        Long temp = g.calculateTimeDifference();
-        long travelTime = g.calculaTempoDeslocamento();
-        tvLatitude.setText(String.valueOf(latitude));
-        tvLongitude.setText(String.valueOf(longitude));
-        tvTempo.setText(String.valueOf(tempo));
-        tvDistanciaPercorrida.setText(String.valueOf(distanciaPercorrida));
-        tvTimeDifference.setText(String.valueOf(temp));
+       ThreadGerenciaDados threadGerenciaDados = new ThreadGerenciaDados(this,true,tvTimeDifference,tvTravelTime,tvVelMedia,tvTravelDistance,tvVelRecomendada);
+       threadGerenciaDados.start();
 
     }
 
@@ -93,6 +89,37 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
 
     }
+
+    public double getDecimalFromEditText(EditText editText) {
+        String inputValue = editText.getText().toString().trim();
+
+        if (inputValue.isEmpty()) {
+            // Se o EditText estiver vazio, você pode definir um valor padrão ou lançar uma exceção, se necessário.
+            return 0.0;
+        }
+
+        return Double.parseDouble(inputValue);
+    }
+
+    public long getLongFromEditText(EditText editText) {
+        String inputValue = editText.getText().toString().trim();
+
+        if (inputValue.isEmpty()) {
+            // Se o EditText estiver vazio, você pode definir um valor padrão ou lançar uma exceção, se necessário.
+            return 0L;
+        }
+
+        try {
+            return Long.parseLong(inputValue);
+        } catch (NumberFormatException e) {
+            // Lidar com o erro de formato inválido, se necessário.
+            e.printStackTrace();
+        }
+
+        return 0L;
+    }
+
+
 
 
 }

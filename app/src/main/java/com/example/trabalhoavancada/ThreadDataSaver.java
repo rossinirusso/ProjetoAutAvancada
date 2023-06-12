@@ -19,7 +19,7 @@ public class ThreadDataSaver extends Thread {
             try {
                 DadosGps dado = m.adiquire();
                 dataSaver.saveData(context, dado);
-                Thread.sleep(10000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

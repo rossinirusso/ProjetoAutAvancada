@@ -1,89 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textViewDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Distância ao destino (km)" />
 
     <EditText
         android:id="@+id/editTextDistance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Distância ao destino (em km)"
+        android:layout_below="@+id/textViewDistance"
         android:inputType="numberDecimal" />
 
-    <EditText
-        android:id="@+id/editTextConsumption"
+    <TextView
+        android:id="@+id/textViewConsumption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Consumo do carro (em km/l)"
+        android:layout_below="@+id/editTextDistance"
+        android:text="Consumo do carro (km/l)" />
+
+    <EditText
+        android:id="@+id/editConsumo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewConsumption"
         android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/textViewTravelTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editConsumo"
+        android:text="Tempo de viagem (horas)" />
 
     <EditText
         android:id="@+id/editTextTravelTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tempo de viagem (em horas)"
+        android:layout_below="@+id/textViewTravelTime"
         android:inputType="numberDecimal" />
 
-    <Button
-        android:id="@+id/buttonCalculate"
+    <TextView
+        android:id="@+id/textViewResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="AbreCalculaDados"
-        android:text="Calcular" />
+        android:layout_below="@+id/buttonCalculate"
+        android:text="" />
 
     <TextView
-        android:id="@+id/latitude"
+        android:id="@+id/textViewVelMedia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_below="@+id/buttonShowData"
+        android:layout_marginTop="0dp"
+        android:text="Velocidade média (km/h):" />
 
     <TextView
-        android:id="@+id/longitude"
+        android:id="@+id/TextViewTempoAndou"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/tempo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
-    <Button
-        android:id="@+id/localizar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="getLocation"
-        android:text="Localizar" />
+        android:layout_below="@+id/textViewVelMedia"
+        android:text="Tempo de deslocamento (min):" />
 
     <TextView
         android:id="@+id/distanciaPercorrida"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_below="@+id/TextViewTempoAndou"
+        android:text="Distância percorrida (km):" />
+
+    <TextView
+        android:id="@+id/tvConsumo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/distanciaPercorrida"
+        android:text="Consumo de combustível (km/l):" />
 
     <TextView
         android:id="@+id/timeDifference"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_below="@+id/tvConsumo"
+        android:text="Tempo para chegar ao destino (min):" />
 
-    <Button
-        android:id="@+id/mostraDados"
+    <TextView
+        android:id="@+id/textViewVelRecomendada"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="MostraDados"
-        android:text="Mostrar Dados" />
+        android:layout_below="@+id/timeDifference"
+        android:text="Velocidade recomendada (km/h):" />
+
 
     <Button
-        android:id="@+id/inicia"
+        android:id="@+id/buttonStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextTravelTime"
+        android:layout_marginTop="68dp"
         android:onClick="Inicia"
         android:text="Iniciar" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/buttonStop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonStart"
+        android:text="Parar"
+        android:onClick="stop" />
+
+    <Button
+        android:id="@+id/buttonLocate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonStop"
+        android:onClick="getLocation"
+        android:text="Localizar" />
+
+    <Button
+        android:id="@+id/buttonShowData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonLocate"
+        android:onClick="MostraDados"
+        android:text="Mostrar Dados" />
+
+</RelativeLayout>
