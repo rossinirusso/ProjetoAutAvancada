@@ -19,6 +19,9 @@ public class GerenciaDados {
 
     private static double distanciaTotal; //em km
     private static long tempoDesejado; //em hora
+    private static int tipo;
+
+    private double consumo;
 
     public synchronized boolean VerificaPilha(){
         if(dados.size()>1){
@@ -39,6 +42,10 @@ public class GerenciaDados {
 
     public synchronized void SetTempoDesejado(long tempoDesejado){
         this.tempoDesejado = (tempoDesejado*(60*60));
+    }
+
+    public synchronized void SetTipoVeiculo(int tipo){
+        this.tipo = tipo;
     }
 
     public synchronized void SalvaDados(Stack<Dados> dados) {
@@ -84,10 +91,6 @@ public class GerenciaDados {
     public synchronized double calculateTimeDifference() {
         double tempoDisp = (tempoDesejado - calculaTempoDeslocamento());
         return tempoDisp/(60); //em minutos;
-    }
-
-    public synchronized double calculaVelocidadeAtual(){
-        return (double) (calcularDistancia()/(calculateTimeDifference()/1000*60*60));
     }
 
 
@@ -157,14 +160,58 @@ public class GerenciaDados {
 
     }
 
+    public double calcularConsumo() {
+        double consumoAux;
+        double velocidade = VelocidadeMediaEntre2Pontos();
+        double distancia = calcularDistancia();
 
+        if(tipo ==1) {
+            if (velocidade < 80) {
+                consumoAux = distancia / 17;
+            } else if (velocidade >= 80 && velocidade <= 120) {
+                consumoAux = distancia / 14;
+            } else {
+                consumoAux = distancia / 10;
+            }
+        }
+        else{
+            if (velocidade < 80) {
+                consumoAux = distancia / 15;
+            } else if (velocidade >= 80 && velocidade <= 120) {
+                consumoAux = distancia / 10;
+            } else {
+                consumoAux = distancia / 7;
+            }
 
+        }
+        consumo = consumo + consumoAux;
 
+        return consumo;
+    }
 
+    public synchronized double VelocidadeMediaEntre2Pontos(){
+        double distancia = calcularDistancia();
+        double tempo = (double)(TempoEntre2Pontos())/(1000*60*60);
+        if(distancia==0){
+            return 0.0;
+        }
+        else{
+            double v = distancia / tempo;
+            return v;
+        }
+    }
 
+    public synchronized double TempoEntre2Pontos(){
+        Dados ponto1 = dados.pop();
+        Dados ponto2 = dados.peek();
+        dados.push(ponto1);
 
+        long temp1 = ponto1.getTime();
+        long temp2 = ponto2.getTime();
 
+        return temp1 - temp2;
 
+    }
 
 
 }

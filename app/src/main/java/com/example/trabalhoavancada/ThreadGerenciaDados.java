@@ -11,9 +11,9 @@ public class ThreadGerenciaDados extends Thread {
     private boolean chave;
     private Dados d;
 
-    private TextView tvLatitude,tvLongitude,tvTempo,tvDistanciaPercorrida,tvTimeDifference, tvTravelTime, tvVelMedia, tvTravelDistance, tvVelRecomendada;
+    private TextView tvLatitude,tvLongitude,tvTempo,tvDistanciaPercorrida,tvTimeDifference, tvTravelTime, tvVelMedia, tvTravelDistance, tvVelRecomendada, tvConsumo;
 
-    public ThreadGerenciaDados(Context context, boolean chave, TextView tvTimeDifference, TextView tvTravelTime,TextView tvVelMedia,TextView tvTravelDistance,TextView tvVelRecomendada ){
+    public ThreadGerenciaDados(Context context, boolean chave, TextView tvTimeDifference, TextView tvTravelTime,TextView tvVelMedia,TextView tvTravelDistance,TextView tvVelRecomendada,TextView tvConsumo ){
         this.context = context;
         this.chave = chave;
         //this.tvLatitude = tvLatitude;
@@ -25,6 +25,11 @@ public class ThreadGerenciaDados extends Thread {
         this.tvVelMedia = tvVelMedia;
         this.tvTravelDistance = tvTravelDistance;
         this.tvVelRecomendada = tvVelRecomendada;
+        this.tvConsumo = tvConsumo;
+    }
+
+    public void Stop(){
+        chave = false;
     }
 
     @Override
@@ -36,6 +41,7 @@ public class ThreadGerenciaDados extends Thread {
                 double distanciaPercorrida = g.calculaDistanciaTotalPercorrida();
                 double velMedia = g.CalculaVelocidadeMedia();
                 double velRecomendada = g.VelocidadeRecomendada();
+                double consumo = g.calcularConsumo();
 
                 double latitude = d.getLatitude();
                 double longitude = d.getLongitude();
@@ -50,6 +56,7 @@ public class ThreadGerenciaDados extends Thread {
                 tvVelMedia.setText("Velocidade Media: " + velMedia + "km/h");
                 tvTravelTime.setText("Tempo de viagem :"+ travelTime + " segundos");
                 tvVelRecomendada.setText("Veocidade Recomendada: " + velRecomendada + "km/h");
+                tvConsumo.setText("Consumo: " + consumo + " litros");
 
 
 
@@ -63,7 +70,15 @@ public class ThreadGerenciaDados extends Thread {
             else{
                 try {
                     double velRecomendada =  g.VelocidadeRecomendada();
+                    double temp = g.calculateTimeDifference();
+                    long travelTime = g.calculaTempoDeslocamento();
+                    tvTravelDistance.setText("Distancia Percorrida: 0 km");
+                    tvTimeDifference.setText("Tempo até o destino:" + temp + " minutos");
+                    tvVelMedia.setText("Velocidade Media: " + 0 + "km/h");
+                    tvTravelTime.setText("Tempo de viagem :"+ travelTime + " segundos");
                     tvVelRecomendada.setText("Veocidade Recomendada: " + velRecomendada + "km/h");
+                    tvConsumo.setText("Consumo: " + 0 + " litros");
+
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
