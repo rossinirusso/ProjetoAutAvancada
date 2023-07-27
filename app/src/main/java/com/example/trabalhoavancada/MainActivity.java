@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private GpsTracker gpsTracker;
     private GerenciaDados g = new GerenciaDados();
     private ThreadGerenciaDados threadGerenciaDados;
+    private ServicoTransporte servicoTransporte;
     private MemComp m = new MemComp();
     private Localizacao loc = new Localizacao();
 
@@ -80,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void MostraDados(View v){
-        threadGerenciaDados = new ThreadGerenciaDados(this,true,tvTimeDifference,tvTravelTime,tvVelMedia,tvTravelDistance,tvVelRecomendada,tvConsumo);
+        servicoTransporte = new ServicoTransporte(this);
+        threadGerenciaDados = new ThreadGerenciaDados(this,true,tvTimeDifference,tvTravelTime,tvVelMedia,tvTravelDistance,tvVelRecomendada,tvConsumo,servicoTransporte);
         threadGerenciaDados.start();
 
     }

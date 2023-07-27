@@ -5,15 +5,17 @@ import android.widget.TextView;
 
 public class ThreadGerenciaDados extends Thread {
 
-    private GerenciaDados g = new GerenciaDados();
+    private GerenciaDados g;
     private Context context;
     private DataReader dataReader = new DataReader();
     private boolean chave;
     private Dados d;
 
+    private ServicoTransporte servicoTransporte;
+
     private TextView tvLatitude,tvLongitude,tvTempo,tvDistanciaPercorrida,tvTimeDifference, tvTravelTime, tvVelMedia, tvTravelDistance, tvVelRecomendada, tvConsumo;
 
-    public ThreadGerenciaDados(Context context, boolean chave, TextView tvTimeDifference, TextView tvTravelTime,TextView tvVelMedia,TextView tvTravelDistance,TextView tvVelRecomendada,TextView tvConsumo ){
+    public ThreadGerenciaDados(Context context, boolean chave, TextView tvTimeDifference, TextView tvTravelTime,TextView tvVelMedia,TextView tvTravelDistance,TextView tvVelRecomendada,TextView tvConsumo, ServicoTransporte servicoTransporte ){
         this.context = context;
         this.chave = chave;
         //this.tvLatitude = tvLatitude;
@@ -26,6 +28,7 @@ public class ThreadGerenciaDados extends Thread {
         this.tvTravelDistance = tvTravelDistance;
         this.tvVelRecomendada = tvVelRecomendada;
         this.tvConsumo = tvConsumo;
+        this.servicoTransporte = servicoTransporte;
     }
 
     public void Stop(){
@@ -35,9 +38,10 @@ public class ThreadGerenciaDados extends Thread {
     @Override
     public void run() {
         while (chave) {
-            g.SalvaDados(dataReader.readData(context));
+            g = servicoTransporte.getGerenciaDados();
+            servicoTransporte.setDadosVeiculo1();
             if(g.VerificaPilha()) {
-                d = g.GetDado();
+                d = servicoTransporte.getVeiculo1();
                 double distanciaPercorrida = g.calculaDistanciaTotalPercorrida();
                 double velMedia = g.CalculaVelocidadeMedia();
                 double velRecomendada = g.VelocidadeRecomendada();
