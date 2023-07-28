@@ -20,6 +20,10 @@ public class MainActivity extends AppCompatActivity {
     private GerenciaDados g = new GerenciaDados();
     private ThreadGerenciaDados threadGerenciaDados;
     private ServicoTransporte servicoTransporte;
+
+    private Reconciliacao reconciliacao;
+
+    private JsonSaver jsonSaver;
     private MemComp m = new MemComp();
     private Localizacao loc = new Localizacao();
 
@@ -84,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         servicoTransporte = new ServicoTransporte(this);
         threadGerenciaDados = new ThreadGerenciaDados(this,true,tvTimeDifference,tvTravelTime,tvVelMedia,tvTravelDistance,tvVelRecomendada,tvConsumo,servicoTransporte);
         threadGerenciaDados.start();
+        jsonSaver = new JsonSaver(this,true);
+        jsonSaver.start();
 
     }
 

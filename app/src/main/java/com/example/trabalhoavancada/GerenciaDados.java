@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Stack;
@@ -14,6 +15,8 @@ public class GerenciaDados {
 
     private DataReader dataReader = new DataReader();
 
+    private Reconciliacao reconciliacao;
+
     private static final int RAIO_TERRA = 6371;
     private static long tempoIncio;
 
@@ -22,6 +25,10 @@ public class GerenciaDados {
     private static int tipo;
 
     private double consumo;
+
+    private double TEMPO;
+
+    private ArrayList<Dados> dadosRec = new ArrayList<>();
 
     public synchronized boolean VerificaPilha(){
         if(dados.size()>1){
@@ -56,6 +63,22 @@ public class GerenciaDados {
         return dados.peek();
     }
 
+
+    public void reconcilia() {
+        if (VerificaPilha()) {
+            // Cria uma cópia da pilha original
+            Stack<Dados> pilhaCopia = new Stack<>();
+            pilhaCopia.addAll(dados);
+                while (!pilhaCopia.isEmpty()) {
+                    dadosRec.add(pilhaCopia.pop());
+                }
+                // Reverter a ordem para ficar igual à pilha original
+                java.util.Collections.reverse(dadosRec);
+                reconciliacao = new Reconciliacao(dadosRec,true);
+                TEMPO = reconciliacao.setRec();
+
+        }
+    }
 
     public synchronized double calcularDistancia() {
         Dados ponto1 = dados.pop();
@@ -150,6 +173,7 @@ public class GerenciaDados {
             double distanciaFalta = distanciaTotal - calculaDistanciaTotalPercorrida();
             double tempoDisp = (tempoDesejado - calculaTempoDeslocamento());
             tempoDisp = tempoDisp/(60*60);
+            //TEMPO = TEMPO/(100);
             return distanciaFalta/tempoDisp;
         }
 

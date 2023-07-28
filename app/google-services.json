@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "823357184583",
+    "project_id": "databaseavancada",
+    "storage_bucket": "databaseavancada.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823357184583:android:519988c7d4831da4eeef62",
+        "android_client_info": {
+          "package_name": "com.example.trabalhoavancada"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823357184583-0876l8ansvnuc13pbna0f5te9kh2gfd4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfcNxCPh4rmS-ANp7Dh3Ek-7152Tfzr-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823357184583-0876l8ansvnuc13pbna0f5te9kh2gfd4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
