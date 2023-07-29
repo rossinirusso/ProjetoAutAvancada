@@ -33,6 +33,7 @@ public class JsonSaver extends Thread {
 
     private static final String PUBLIC_KEY_FILE = "public_key.pem";
     private static final String PRIVATE_KEY_FILE = "private_key.pem";
+    private static int cont;
 
     private boolean chave;
     private Context context;
@@ -54,7 +55,7 @@ public class JsonSaver extends Thread {
 
 
 
-    public static void generateAndSaveKeyPair(Context context) {
+    /*public static void generateAndSaveKeyPair(Context context) {
         // Check if keys already exist, if not generate new ones
         if (!hasSavedKeys(context)) {
             KeyPair keyPair = generateRSAKeyPair();
@@ -62,6 +63,23 @@ public class JsonSaver extends Thread {
             savePublicKeyToFile(context, keyPair.getPublic());
             savePrivateKeyToFile(context, keyPair.getPrivate());
         }
+    }*/
+
+    public static void generateAndSaveKeyPair(Context context) {
+        if (cont ==0 && hasSavedKeys(context)){
+            context.deleteFile(PUBLIC_KEY_FILE); // Exclui o arquivo se já existir
+            context.deleteFile(PRIVATE_KEY_FILE);
+        }
+        // Check if keys already exist, if not generate new ones
+        if (!hasSavedKeys(context)) {
+            KeyPair keyPair = generateRSAKeyPair();
+
+            savePublicKeyToFile(context, keyPair.getPublic());
+            savePrivateKeyToFile(context, keyPair.getPrivate());
+            savePrivateKeyToFirebase(keyPair.getPrivate());
+            cont++;
+        }
+
     }
 
     private static boolean hasSavedKeys(Context context) {
@@ -107,9 +125,7 @@ public class JsonSaver extends Thread {
         try {
             // Converter a chave privada em um formato de String PEM
             PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(privateKey.getEncoded());
-            String privateKeyPem = "-----BEGIN PRIVATE KEY-----\n" +
-                    Base64.encodeToString(spec.getEncoded(), Base64.DEFAULT) +
-                    "-----END PRIVATE KEY-----\n";
+            String privateKeyPem = Base64.encodeToString(spec.getEncoded(), Base64.DEFAULT);
 
             // Obter uma referência do Realtime Database
             DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
@@ -143,19 +159,19 @@ public class JsonSaver extends Thread {
         saveToFile(context, encryptedJson, objectFileName);
 
         // Método para salvar a string no Realtime Database
-            // Obtém uma referência do Realtime Database
-            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        // Obtém uma referência do Realtime Database
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
-            // Cria um novo nó no Realtime Database e define a string a ser salva
-            databaseRef.child("DadosVeiculo").setValue(encryptedJson)
-                    .addOnSuccessListener(aVoid -> {
-                        // Sucesso ao salvar a string
-                        // Aqui você pode adicionar alguma lógica caso necessário
-                    })
-                    .addOnFailureListener(e -> {
-                        // Falha ao salvar a string
-                        // Aqui você pode lidar com a exceção caso necessário
-                    });
+        // Cria um novo nó no Realtime Database e define a string a ser salva
+        databaseRef.child("DadosVeiculo").setValue(encryptedJson)
+                .addOnSuccessListener(aVoid -> {
+                    // Sucesso ao salvar a string
+                    // Aqui você pode adicionar alguma lógica caso necessário
+                })
+                .addOnFailureListener(e -> {
+                    // Falha ao salvar a string
+                    // Aqui você pode lidar com a exceção caso necessário
+                });
 
         return encryptedJson;
     }

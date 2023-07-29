@@ -41,13 +41,13 @@ public class ThreadGerenciaDados extends Thread {
             g = servicoTransporte.getGerenciaDados();
             try {
                 servicoTransporte.setDadosVeiculo1();
+                servicoTransporte.setDadosVeiculo2();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             if(g.VerificaPilha()) {
                 g.reconcilia();
                 d = servicoTransporte.getVeiculo1();
-                servicoTransporte.setDadosVeiculo2();
                 double distanciaPercorrida = g.calculaDistanciaTotalPercorrida();
                 double velMedia = g.CalculaVelocidadeMedia();
                 double velRecomendada = g.VelocidadeRecomendada();

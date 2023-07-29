@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -11,7 +13,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,53 +42,104 @@ public class JsonReader {
         }
     }
 
-    public interface PrivateKeyCallback {
-        void onPrivateKeyLoaded(PrivateKey privateKey);
-        void onError(Exception e);
+    private static PrivateKey lerPrivateKeyDoFirebase() {
+        // Obtém uma referência do Realtime Database para a chave privada PEM
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference()
+                .child("users")
+                .child("userId")
+                .child("privateKeyPem");
+
+        final String[] privateKeyPem = {null}; // Usando um array para armazenar o resultado final
+
+        // Adiciona um listener para recuperar a chave privada PEM
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Verifica se o snapshot tem algum valor
+                if (dataSnapshot.exists()) {
+                    // Obtém a string PEM salva do snapshot
+                    privateKeyPem[0] = dataSnapshot.getValue(String.class);
+                } else {
+                    // A chave privada não foi encontrada no nó especificado
+                    // Lidar com esse cenário, caso necessário
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Ocorreu um erro ao tentar recuperar a chave privada PEM
+                // Lidar com o erro, caso necessário
+            }
+        });
+
+        // Aguarda a finalização da leitura antes de retornar a chave privada
+        // Isso é necessário porque o Firebase executa a leitura de forma assíncrona
+        while (privateKeyPem[0] == null) {
+            try {
+                Thread.sleep(100); // Pequena pausa para evitar consumo excessivo de recursos
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Decodifica a string PEM para obter o array de bytes da chave privada
+        byte[] privateKeyBytes = Base64.decode(privateKeyPem[0].getBytes(),Base64.DEFAULT);
+
+        try {
+            // Carrega a chave privada usando a classe KeyFactory e a especificação PKCS8
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+            return keyFactory.generatePrivate(keySpec);
+        } catch (Exception e) {
+            // Ocorreu um erro ao tentar carregar a chave privada
+            // Lidar com o erro, caso necessário
+            return null;
+        }
     }
 
+    private static byte[] lerBytesCriptografadosDoFirebase() {
+        // Obtém uma referência do Realtime Database para o nó "DadosVeiculo"
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("DadosVeiculo");
 
+        final byte[][] encryptedBytes = {null}; // Usando um array para armazenar o resultado final
 
-    private static void readPrivateKeyFromFirebase(PrivateKeyCallback callback) {
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        // Adiciona um listener para recuperar os dados
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Verifica se o snapshot tem algum valor
+                if (dataSnapshot.exists()) {
+                    // Obtém a string salva do snapshot
+                    String encryptedBase64 = dataSnapshot.getValue(String.class);
 
-        databaseRef.child("users").child("userId").child("privateKeyPem")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            String privateKeyPem = dataSnapshot.getValue(String.class);
+                    // Decodifica a string Base64 para obter o array de bytes criptografados
+                    encryptedBytes[0] = Base64.decode(encryptedBase64,Base64.DEFAULT);
+                } else {
+                    // O nó "DadosVeiculo" não possui nenhum valor
+                    // Lidar com esse cenário, caso necessário
+                }
+            }
 
-                            try {
-                                String privateKeyData = privateKeyPem
-                                        .replace("-----BEGIN PRIVATE KEY-----\n", "")
-                                        .replace("-----END PRIVATE KEY-----\n", "");
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Ocorreu um erro ao tentar recuperar os dados
+                // Lidar com o erro, caso necessário
+            }
+        });
 
-                                byte[] keyBytes = Base64.decode(privateKeyData, Base64.DEFAULT);
-                                PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
-                                KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-                                PrivateKey privateKey = keyFactory.generatePrivate(spec);
+        // Aguarda a finalização da leitura antes de retornar os bytes criptografados
+        // Isso é necessário porque o Firebase executa a leitura de forma assíncrona
+        while (encryptedBytes[0] == null) {
+            try {
+                Thread.sleep(100); // Pequena pausa para evitar consumo excessivo de recursos
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
-                                // Chame o callback com a chave privada obtida
-                                callback.onPrivateKeyLoaded(privateKey);
-                            } catch (Exception e) {
-                                // Tratar a exceção, caso ocorra algum erro na decodificação da chave
-                                callback.onError(e);
-                            }
-                        } else {
-                            // A chave privada não foi encontrada no Firebase
-                            // Lide com o caso em que a chave não existe
-                            callback.onError(new Exception("Chave privada não encontrada no Firebase"));
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // Tratar erros de leitura do Firebase, se necessário
-                        callback.onError(databaseError.toException());
-                    }
-                });
+        return encryptedBytes[0];
     }
+
 
 
 
@@ -114,8 +166,8 @@ public class JsonReader {
 
     public static <T> T decryptFileToObject(Context context, String fileName, Class<T> clazz) {
         try {
-            PrivateKey privateKey = loadPrivateKey(context);
-            byte[] encryptedBytes = readKeyFile(context, fileName);
+            PrivateKey privateKey = lerPrivateKeyDoFirebase();
+            byte[] encryptedBytes = lerBytesCriptografadosDoFirebase();
             byte[] decryptedBytes = decrypt(encryptedBytes, privateKey);
             String json = new String(decryptedBytes, CHARSET_NAME);
             return jsonToObject(json, clazz);
