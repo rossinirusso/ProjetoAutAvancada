@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     public void getLocation(View view) throws InterruptedException {
         ThreadDataSaver threadDataSaver = new ThreadDataSaver(this);
         threadDataSaver.start();
+        jsonSaver = new JsonSaver(this,true);
+        jsonSaver.start();
 
     }
 
@@ -88,8 +90,7 @@ public class MainActivity extends AppCompatActivity {
         servicoTransporte = new ServicoTransporte(this);
         threadGerenciaDados = new ThreadGerenciaDados(this,true,tvTimeDifference,tvTravelTime,tvVelMedia,tvTravelDistance,tvVelRecomendada,tvConsumo,servicoTransporte);
         threadGerenciaDados.start();
-        jsonSaver = new JsonSaver(this,true);
-        jsonSaver.start();
+
 
     }
 

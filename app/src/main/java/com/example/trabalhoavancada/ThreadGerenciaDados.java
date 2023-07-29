@@ -8,6 +8,7 @@ public class ThreadGerenciaDados extends Thread {
     private GerenciaDados g;
     private Context context;
     private DataReader dataReader = new DataReader();
+    private  MemComp m = new MemComp();
     private boolean chave;
     private Dados d;
 
@@ -38,7 +39,7 @@ public class ThreadGerenciaDados extends Thread {
     @Override
     public void run() {
         while (chave) {
-            g = servicoTransporte.getGerenciaDados();
+            g = servicoTransporte.getGerenciaDadosVeiculo1();
             try {
                 servicoTransporte.setDadosVeiculo1();
                 servicoTransporte.setDadosVeiculo2();
@@ -95,6 +96,14 @@ public class ThreadGerenciaDados extends Thread {
                 }
             }
 
+
+
+        }
+
+        try {
+            m.escreveGerenciaDadosV1(g);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
 

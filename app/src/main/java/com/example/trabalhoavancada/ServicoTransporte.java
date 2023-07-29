@@ -5,13 +5,18 @@ import android.content.Context;
 import com.google.gson.Gson;
 
 import java.util.List;
+import java.util.Stack;
 
 public class ServicoTransporte {
 
     private Dados veiculo1;
     private Dados veiculo2;
+
+    private Stack<Dados> dadosVeiculo2 = new Stack<>();
     private Context context;
     private GerenciaDados g = new GerenciaDados();
+
+    private GerenciaDados g2 = new GerenciaDados();
     private DataReader dataReader = new DataReader();
 
     private JsonReader jsonReader = new JsonReader();
@@ -45,6 +50,15 @@ public class ServicoTransporte {
 
     public void setDadosVeiculo2(){
         veiculo2 = jsonReader.decryptFileToObject(context,"dadosCriptografados.json",Dados.class);
+        if(veiculo2 != null) {
+            dadosVeiculo2.push(veiculo2);
+            g2.SalvaDados(dadosVeiculo2);
+            try {
+                m.escreveVeiculo2(veiculo2);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
 
     }
@@ -57,8 +71,12 @@ public class ServicoTransporte {
         return veiculo2;
     }
 
-    public GerenciaDados getGerenciaDados(){
+    public GerenciaDados getGerenciaDadosVeiculo1(){
         return g;
+    }
+
+    public GerenciaDados getGerenciaDadosVeiculo2(){
+        return g2;
     }
 
     public String getDadosVeiculo1(){
