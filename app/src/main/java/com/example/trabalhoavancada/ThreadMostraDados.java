@@ -42,7 +42,6 @@ public class ThreadMostraDados extends Thread {
             g = servicoTransporte.getGerenciaDadosVeiculo1();
             if (g != null){
                 if (g.VerificaPilha()) {
-                    g.reconcilia();
                     d = servicoTransporte.getVeiculo1();
                     double distanciaPercorrida = g.getDistanciaPercorrida();
                     double velMedia = g.getVelMedia();
@@ -59,7 +58,7 @@ public class ThreadMostraDados extends Thread {
                     tvVelMedia.setText("Velocidade Media: " + velMedia + "km/h");
                     tvTravelTime.setText("Tempo de viagem :" + travelTime + " segundos");
                     tvVelRecomendada.setText("Veocidade Recomendada: " + velRecomendada + "km/h");
-                    tvConsumo.setText("Consumo: " + consumo + " litros");
+                    //tvConsumo.setText("Consumo: " + consumo + " litros");
 
 
                     try {
@@ -77,7 +76,7 @@ public class ThreadMostraDados extends Thread {
                         tvVelMedia.setText("Velocidade Media: " + 0 + "km/h");
                         tvTravelTime.setText("Tempo de viagem :" + travelTime + " segundos");
                         tvVelRecomendada.setText("Veocidade Recomendada: " + velRecomendada + "km/h");
-                        tvConsumo.setText("Consumo: " + 0 + " litros");
+                        //tvConsumo.setText("Consumo: " + 0 + " litros");
 
                         Thread.sleep(10000);
                     } catch (InterruptedException e) {
@@ -85,11 +84,6 @@ public class ThreadMostraDados extends Thread {
                     }
                 }
 
-            try {
-                m.escreveGerenciaDadosV1(g);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
 
         }
 

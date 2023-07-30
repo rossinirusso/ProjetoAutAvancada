@@ -57,9 +57,11 @@ public class GerenciaDados {
         this.tempoDesejado = (tempoDesejado*(60*60));
     }
 
-    public synchronized void SetTipoVeiculo(int tipo){
+    /*public synchronized void SetTipoVeiculo(int tipo){
         this.tipo = tipo;
     }
+
+     */
 
     public synchronized void SalvaDados(Stack<Dados> dados) {
         this.dados = dados;
@@ -70,7 +72,7 @@ public class GerenciaDados {
     }
 
 
-    public void reconcilia() {
+  /*  public void reconcilia() {
         if (VerificaPilha()) {
             // Cria uma cópia da pilha original
             Stack<Dados> pilhaCopia = new Stack<>();
@@ -80,11 +82,13 @@ public class GerenciaDados {
                 }
                 // Reverter a ordem para ficar igual à pilha original
                 java.util.Collections.reverse(dadosRec);
-                reconciliacao = new Reconciliacao(dadosRec,true);
+                reconciliacao = new Reconciliacao(true);
                 TEMPO = reconciliacao.setRec();
 
         }
     }
+
+   */
 
     public synchronized double calcularDistancia() {
         Dados ponto1 = dados.pop();
@@ -195,7 +199,7 @@ public class GerenciaDados {
 
     }
 
-    public double calcularConsumo() {
+    /*public double calcularConsumo() {
         double consumoAux;
         double velocidade = VelocidadeMediaEntre2Pontos();
         double distancia = calcularDistancia();
@@ -223,6 +227,8 @@ public class GerenciaDados {
 
         return consumo;
     }
+
+     */
 
     public synchronized double VelocidadeMediaEntre2Pontos(){
         double distancia = calcularDistancia();
@@ -274,6 +280,14 @@ public class GerenciaDados {
 
     public double getTempoRestante() {
         return tempoRestante;
+    }
+
+    public double getDistanciaTotal(){
+        return distanciaTotal;
+    }
+
+    public double getTempoDesejado(){
+        return tempoDesejado;
     }
 
 

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +12,11 @@
     android:paddingBottom="16dp"
     tools:context=".MainActivity">
 
-    <TextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+<TextView
         android:id="@+id/textViewDistance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,24 +30,38 @@
         android:inputType="numberDecimal" />
 
     <TextView
-        android:id="@+id/textViewConsumption"
+        android:id="@+id/textViewDistanceCross"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextDistance"
-        android:text="Tipo do carro (1 ou 2)" />
+        android:text="Distância ao ponto de Cross (km)" />
 
     <EditText
-        android:id="@+id/editConsumo"
+        android:id="@+id/editTextDistanceCross"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewConsumption"
+        android:layout_below="@+id/textViewDistanceCross"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/textViewIdTranporte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextDistanceCross"
+        android:text="ID Serviço de transporte" />
+
+    <EditText
+        android:id="@+id/editIdTransporte"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewIdTranporte"
         android:inputType="numberDecimal" />
 
     <TextView
         android:id="@+id/textViewTravelTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editConsumo"
+        android:layout_below="@+id/editIdTransporte"
         android:text="Tempo de viagem (horas)" />
 
     <EditText
@@ -51,17 +72,133 @@
         android:inputType="numberDecimal" />
 
     <TextView
+        android:id="@+id/textViewMotorista"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextTravelTime"
+        android:text="Motorista" />
+
+    <EditText
+        android:id="@+id/editTextMotorista"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewMotorista"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/textViewPassageiros"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextMotorista"
+        android:text="Insira os passageiros:" />
+
+    <EditText
+        android:id="@+id/editTextPassageiros"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewPassageiros"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/textViewCargas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextPassageiros"
+        android:text="Insira as cargas:" />
+
+    <EditText
+        android:id="@+id/editTextCargas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewCargas"
+        android:inputType="text" />
+
+
+    <TextView
         android:id="@+id/textViewResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonCalculate"
         android:text="" />
 
-    <TextView
+
+        <TextView
+            android:id="@+id/textViewVehicle1Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonShowData"
+            android:text="Veículo 1"
+            android:textAlignment="center"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewMotoristaVeiculo1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewVehicle1Title"
+            android:text="Motorista do Veículo 1" />
+
+        <TextView
+            android:id="@+id/textViewPassageirosVeiculo1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewMotoristaVeiculo1"
+            android:text="Passageiros do Veículo 1" />
+
+        <TextView
+            android:id="@+id/textViewCargasVeiculo1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewPassageirosVeiculo1"
+            android:text="Cargas do Veículo 1" />
+
+        <TextView
+            android:id="@+id/textViewVehicle2Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewCargasVeiculo1"
+            android:text="Veículo 2"
+            android:textAlignment="center"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewMotoristaVeiculo2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewVehicle2Title"
+            android:text="Motorista do Veículo 2" />
+
+        <TextView
+            android:id="@+id/textViewPassageirosVeiculo2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewMotoristaVeiculo2"
+            android:text="Passageiros do Veículo 2" />
+
+        <TextView
+            android:id="@+id/textViewCargasVeiculo2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewPassageirosVeiculo2"
+            android:text="Cargas do Veículo 2" />
+
+        <TextView
+            android:id="@+id/textViewDadosSeuVeiculo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewCargasVeiculo2"
+            android:text="Dados do seu veiculo"
+            android:textAlignment="center"
+            android:textStyle="bold" />
+
+
+
+
+        <TextView
         android:id="@+id/textViewVelMedia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonShowData"
+        android:layout_below="@+id/textViewDadosSeuVeiculo"
         android:layout_marginTop="0dp"
         android:text="Velocidade média (km/h):" />
 
@@ -79,18 +216,11 @@
         android:layout_below="@+id/TextViewTempoAndou"
         android:text="Distância percorrida (km):" />
 
-    <TextView
-        android:id="@+id/textViewConsumo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/distanciaPercorrida"
-        android:text="Consumo de combustível (km/l):" />
-
-    <TextView
+        <TextView
         android:id="@+id/timeDifference"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewConsumo"
+        android:layout_below="@+id/distanciaPercorrida"
         android:text="Tempo para chegar ao destino (min):" />
 
     <TextView
@@ -105,7 +235,7 @@
         android:id="@+id/buttonStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextTravelTime"
+        android:layout_below="@+id/editTextPassageiros"
         android:layout_marginTop="68dp"
         android:onClick="Inicia"
         android:text="Iniciar" />
@@ -134,4 +264,14 @@
         android:onClick="MostraDados"
         android:text="Mostrar Dados" />
 
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+
 </RelativeLayout>
+</ScrollView>
+

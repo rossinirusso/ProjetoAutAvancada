@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private DataReader dataReader = new DataReader();
     private DataSaver dataSaver = new DataSaver();
     private TextView tvLatitude,tvLongitude,tvTempo,tvDistanciaPercorrida,tvTimeDifference, tvTravelTime, tvVelMedia, tvTravelDistance, tvVelRecomendada,tvConsumo;;
-    private EditText edDistancia, edConsumo, edTempo;
+    private EditText edDistancia, edConsumo, edTempo, edmotorista;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +48,9 @@ public class MainActivity extends AppCompatActivity {
         tvVelRecomendada = (TextView)findViewById(R.id.textViewVelRecomendada);
         tvConsumo = (TextView)findViewById(R.id.textViewConsumo);
         edDistancia = (EditText)findViewById(R.id.editTextDistance);
-        edConsumo = (EditText)findViewById(R.id.editConsumo);
+        //edConsumo = (EditText)findViewById(R.id.editConsumo);
         edTempo = (EditText)findViewById(R.id.editTextTravelTime);
+        edmotorista = (EditText)findViewById(R.id.editTextMotorista);
 
 
 
@@ -78,23 +79,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void Inicia(View v){
 
+        servicoTransporte = new ServicoTransporte(this);
         loc.iniciaLocalizacao(this);
         dataReader.deleteData(this);
+        //servicoTransporte.addMotorista(edmotorista.getText().toString());
         g.SetTempoInico(System.currentTimeMillis());
-        g.SetTipoVeiculo(getIntFromEditText(edConsumo));
+        //g.SetTipoVeiculo(getIntFromEditText(edConsumo));
         g.SetDistanciaTotal(getDecimalFromEditText(edDistancia));
         g.SetTempoDesejado(getLongFromEditText(edTempo));
 
     }
 
     public void MostraDados(View v){
-        servicoTransporte = new ServicoTransporte(this);
         threadGerenciaDados = new ThreadGerenciaDados(this,true,servicoTransporte,servicoTransporte.getGerenciaDadosVeiculo1(),1);
         threadGerenciaDados.start();
         threadGerenciaDadosV2 = new ThreadGerenciaDados(this,true,servicoTransporte,servicoTransporte.getGerenciaDadosVeiculo2(),2);
         threadGerenciaDadosV2.start();
         threadMostraDados = new ThreadMostraDados(this,true,tvTimeDifference,tvTravelTime,tvVelMedia,tvTravelDistance,tvVelRecomendada,tvConsumo,servicoTransporte);
         threadMostraDados.start();
+        reconciliacao = new Reconciliacao(true);
+        reconciliacao.start();
 
 
     }

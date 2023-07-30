@@ -41,7 +41,7 @@ public class ThreadGerenciaDados extends Thread {
                 double distanciaPercorrida = g.calculaDistanciaTotalPercorrida();
                 double velMedia = g.CalculaVelocidadeMedia();
                 double velRecomendada = g.VelocidadeRecomendada();
-                double consumo = g.calcularConsumo();
+                //double consumo = g.calcularConsumo();
                 double temp = g.calculateTimeDifference();
                 long travelTime = g.calculaTempoDeslocamento();
 
@@ -52,22 +52,24 @@ public class ThreadGerenciaDados extends Thread {
                 }
             }
 
-        }
+            if (id == 1){
+                try {
+                    m.escreveGerenciaDadosV1(g);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else if(id==2){
+                try {
+                    m.escreveGerenciaDadosV2(g);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
 
 
-        if (id == 1){
-            try {
-                m.escreveGerenciaDadosV1(g);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
-    }
-        else if(id==2){
-            try {
-                m.escreveGerenciaDadosV2(g);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+
+
 
         }
 

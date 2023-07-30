@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -26,9 +27,9 @@ public class ServicoTransporte {
     private Reconciliacao reconciliacao;
 
     private static long tempoInicio;
-    private static List<String> motoristas;
-    private static List<String> cargas;
-    private static List<String> passageiros;
+    private static List<String> motoristas = new ArrayList<>();
+    private static List<String> cargas = new ArrayList<>();
+    private static List<String> passageiros = new ArrayList<>();
     private static String id;
 
     public ServicoTransporte(Context context){
@@ -41,9 +42,11 @@ public class ServicoTransporte {
             veiculo1 = g.GetDado();
             m.escreveVeiculo(veiculo1);
 
-            //veiculo1.setMotorista(motoristas.get(0));
-            //veiculo1.setCargas(cargas);
-            //veiculo1.setPassageiros(passageiros);
+            if(!motoristas.isEmpty() && veiculo1 !=null){
+            veiculo1.setMotorista(motoristas.get(0));
+            veiculo1.setCargas(cargas);
+            veiculo1.setPassageiros(passageiros);
+            }
 
             veiculo2 = jsonReader.decryptFileToObject(context,"dadosCriptografados.json",Dados.class);
             if(veiculo2 != null) {
@@ -79,6 +82,18 @@ public class ServicoTransporte {
     public String getDadosVeiculo1(){
         Gson v = new Gson();
         return v.toJson(veiculo1);
+    }
+
+    public void addMotorista(String motorista){
+        motoristas.add(motorista);
+    }
+
+    public void addPassageiros(List passageiros){
+        this.passageiros = passageiros;
+    }
+
+    public void addCargas(List cargas){
+        this.cargas = cargas;
     }
 
 

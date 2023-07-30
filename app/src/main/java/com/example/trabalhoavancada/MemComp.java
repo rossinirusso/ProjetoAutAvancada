@@ -10,8 +10,8 @@ public class MemComp extends AppCompatActivity {
     private static Dados veiculo;
     private static Dados veiculo2;
 
-    private GerenciaDados g = new GerenciaDados();
-    private GerenciaDados g2 = new GerenciaDados();
+    private static GerenciaDados g = new GerenciaDados();
+    private static GerenciaDados g2 = new GerenciaDados();
 
     //private boolean semaforo = false; // false == travado / true == destravado
     private Semaphore semaforo = new Semaphore(10); // Número de threads do app
