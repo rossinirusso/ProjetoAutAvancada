@@ -34,6 +34,9 @@ public class GerenciaDados {
 
     private double TEMPO;
 
+    private String passageiros;
+    private String cargas;
+
     private ArrayList<Dados> dadosRec = new ArrayList<>();
 
     public synchronized boolean VerificaPilha(){
@@ -253,6 +256,44 @@ public class GerenciaDados {
         return temp1 - temp2;
 
     }
+
+    public String joinNames(ArrayList<String> namesList) {
+        if (namesList == null || namesList.isEmpty()) {
+            return ""; // Retorna uma string vazia se a lista for nula ou vazia
+        }
+
+        // Concatena os nomes da lista em uma única string separada por vírgula
+        StringBuilder resultBuilder = new StringBuilder();
+        for (int i = 0; i < namesList.size(); i++) {
+            if (i > 0) {
+                resultBuilder.append(", "); // Adiciona uma vírgula e espaço antes dos nomes a partir do segundo nome
+            }
+            resultBuilder.append(namesList.get(i));
+        }
+
+        return resultBuilder.toString();
+    }
+
+    public void setPassageiros(ArrayList<String> p){
+        passageiros = joinNames(p);
+
+    }
+
+    public String getPassageiros(){
+        return passageiros;
+    }
+
+    public void setcargas(ArrayList<String> c){
+        cargas = joinNames(c);
+
+    }
+
+    public String getCargas(){
+        return cargas;
+    }
+
+
+
 
     public double calculaDistanciaFalta(){
         return distanciaTotal-distanciaPercorrida;

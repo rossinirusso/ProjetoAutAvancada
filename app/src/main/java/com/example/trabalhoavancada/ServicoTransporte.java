@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -44,6 +45,7 @@ public class ServicoTransporte {
 
             if(!motoristas.isEmpty() && veiculo1 !=null){
             veiculo1.setMotorista(motoristas.get(0));
+
             veiculo1.setCargas(cargas);
             veiculo1.setPassageiros(passageiros);
             }
@@ -62,6 +64,25 @@ public class ServicoTransporte {
 
     }
 
+    public ArrayList<String> splitNames(String namesString) {
+        // Verifica se a string não é nula ou vazia
+        if (namesString == null || namesString.isEmpty()) {
+            return new ArrayList<>(); // Retorna um ArrayList vazio se a string for nula ou vazia
+        }
+
+        // Remove espaços em branco adicionais antes ou depois dos nomes
+        namesString = namesString.trim();
+
+        // Divide os nomes com base na vírgula e converte o array em ArrayList
+        ArrayList<String> namesList = new ArrayList<>(Arrays.asList(namesString.split(",")));
+
+        // Remove espaços em branco adicionais dos nomes individuais
+        for (int i = 0; i < namesList.size(); i++) {
+            namesList.set(i, namesList.get(i).trim());
+        }
+
+        return namesList;
+    }
 
     public Dados getVeiculo1(){
         return veiculo1;
@@ -88,12 +109,12 @@ public class ServicoTransporte {
         motoristas.add(motorista);
     }
 
-    public void addPassageiros(List passageiros){
-        this.passageiros = passageiros;
+    public void addPassageiros(String passageiros){
+        this.passageiros = splitNames(passageiros);
     }
 
-    public void addCargas(List cargas){
-        this.cargas = cargas;
+    public void addCargas(String cargas){
+        this.cargas = splitNames(cargas);
     }
 
 

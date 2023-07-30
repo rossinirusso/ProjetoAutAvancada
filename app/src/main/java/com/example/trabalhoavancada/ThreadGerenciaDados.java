@@ -3,6 +3,8 @@ package com.example.trabalhoavancada;
 import android.content.Context;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class ThreadGerenciaDados extends Thread {
 
     private GerenciaDados g;
@@ -44,6 +46,8 @@ public class ThreadGerenciaDados extends Thread {
                 //double consumo = g.calcularConsumo();
                 double temp = g.calculateTimeDifference();
                 long travelTime = g.calculaTempoDeslocamento();
+                g.setPassageiros((ArrayList<String>) d.getPassageiros());
+                g.setcargas((ArrayList<String>) d.getCargas());
 
                 try {
                     Thread.sleep(10000);
