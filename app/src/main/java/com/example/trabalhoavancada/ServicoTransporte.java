@@ -35,7 +35,7 @@ public class ServicoTransporte {
         this.context = context;
     }
 
-    public void setDadosVeiculo1() throws InterruptedException {
+    public void setDadosVeiculos() throws InterruptedException {
         g.SalvaDados(dataReader.readData(context));
         if(g.VerificaPilha()) {
             veiculo1 = g.GetDado();
@@ -44,24 +44,21 @@ public class ServicoTransporte {
             //veiculo1.setMotorista(motoristas.get(0));
             //veiculo1.setCargas(cargas);
             //veiculo1.setPassageiros(passageiros);
-        }
 
-    }
-
-    public void setDadosVeiculo2(){
-        veiculo2 = jsonReader.decryptFileToObject(context,"dadosCriptografados.json",Dados.class);
-        if(veiculo2 != null) {
-            dadosVeiculo2.push(veiculo2);
-            g2.SalvaDados(dadosVeiculo2);
-            try {
-                m.escreveVeiculo2(veiculo2);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            veiculo2 = jsonReader.decryptFileToObject(context,"dadosCriptografados.json",Dados.class);
+            if(veiculo2 != null) {
+                dadosVeiculo2.push(veiculo2);
+                g2.SalvaDados(dadosVeiculo2);
+                try {
+                    m.escreveVeiculo2(veiculo2);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
-
     }
+
 
     public Dados getVeiculo1(){
         return veiculo1;

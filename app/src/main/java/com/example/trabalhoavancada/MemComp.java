@@ -11,6 +11,7 @@ public class MemComp extends AppCompatActivity {
     private static Dados veiculo2;
 
     private GerenciaDados g = new GerenciaDados();
+    private GerenciaDados g2 = new GerenciaDados();
 
     //private boolean semaforo = false; // false == travado / true == destravado
     private Semaphore semaforo = new Semaphore(10); // Número de threads do app
@@ -87,6 +88,24 @@ public class MemComp extends AppCompatActivity {
         // travar a memória, escreve os dados, destravar a memória
         semaforo.acquire();// trava a memória
         g = obj; //escreve os dados do a serem escritos no objeto principal
+        semaforo.release();// destrava a memória
+    }
+
+    public GerenciaDados adiquireGerenciaDadosV2 () throws InterruptedException {
+        // travar a memória, adquire os dados, destravar a memória
+        GerenciaDados pkg = new GerenciaDados();
+
+        semaforo.acquire();// trava a memória
+        pkg = g2;
+        semaforo.release();// destrava a memória
+
+        return pkg;
+    }
+
+    public void escreveGerenciaDadosV2 (GerenciaDados obj) throws InterruptedException {
+        // travar a memória, escreve os dados, destravar a memória
+        semaforo.acquire();// trava a memória
+        g2 = obj; //escreve os dados do a serem escritos no objeto principal
         semaforo.release();// destrava a memória
     }
 }

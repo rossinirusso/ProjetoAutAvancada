@@ -19,7 +19,7 @@ public class IntervalosTempo {
 
     private static double tempoEntrePontos;
 
-    public void setVeiculo1(){
+   /* public void setVeiculo1(){
         try {
             veiculo1 = m.adiquireVeiculo();
         } catch (InterruptedException e) {
@@ -38,7 +38,30 @@ public class IntervalosTempo {
             throw new RuntimeException(e);
         }
 
+    }*/
+
+    public void getGerenciaDadosV1(){
+        try {
+            g = m.adiquireGerenciaDadosV1();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    public void getGerenciaDadosV2(){
+        try {
+            g = m.adiquireGerenciaDadosV2();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public double tempoDisponivel(){
+        velMediaVeiculo2 = g.getVelMedia();
+        distanciaFaltaVeiculo2 = g.calculaDistanciaFalta();
+        return  velMediaVeiculo2/distanciaFaltaVeiculo2;
+    }
+
 
 
 

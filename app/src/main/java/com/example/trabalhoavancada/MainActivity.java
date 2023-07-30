@@ -5,7 +5,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +17,9 @@ public class MainActivity extends AppCompatActivity {
 
     private GpsTracker gpsTracker;
     private GerenciaDados g = new GerenciaDados();
+    private ThreadMostraDados threadMostraDados;
     private ThreadGerenciaDados threadGerenciaDados;
+    private ThreadGerenciaDados threadGerenciaDadosV2;
     private ServicoTransporte servicoTransporte;
 
     private Reconciliacao reconciliacao;
@@ -88,15 +89,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void MostraDados(View v){
         servicoTransporte = new ServicoTransporte(this);
-        threadGerenciaDados = new ThreadGerenciaDados(this,true,tvTimeDifference,tvTravelTime,tvVelMedia,tvTravelDistance,tvVelRecomendada,tvConsumo,servicoTransporte);
+        threadGerenciaDados = new ThreadGerenciaDados(this,true,servicoTransporte,servicoTransporte.getGerenciaDadosVeiculo1(),1);
         threadGerenciaDados.start();
+        threadGerenciaDadosV2 = new ThreadGerenciaDados(this,true,servicoTransporte,servicoTransporte.getGerenciaDadosVeiculo2(),2);
+        threadGerenciaDadosV2.start();
+        threadMostraDados = new ThreadMostraDados(this,true,tvTimeDifference,tvTravelTime,tvVelMedia,tvTravelDistance,tvVelRecomendada,tvConsumo,servicoTransporte);
+        threadMostraDados.start();
 
 
     }
 
     public void Stop(View v){
-        threadGerenciaDados.Stop();
+        threadMostraDados.Stop();
         loc.terminaThread();
+        threadGerenciaDados.Stop();
+        jsonSaver.Stop();
+        threadGerenciaDadosV2.Stop();
 
     }
 

@@ -11,7 +11,7 @@ import java.util.Stack;
 
 public class GerenciaDados {
 
-    private static Stack<Dados> dados = new Stack<>();
+    private  Stack<Dados> dados = new Stack<>();
 
     private DataReader dataReader = new DataReader();
 
@@ -20,11 +20,17 @@ public class GerenciaDados {
     private static final int RAIO_TERRA = 6371;
     private static long tempoIncio;
 
-    private static double distanciaTotal; //em km
+    private static  double distanciaTotal; //em km
     private static long tempoDesejado; //em hora
     private static int tipo;
 
     private double consumo;
+
+    private double distanciaPercorrida;
+    private double velMedia;
+    private double velRecomendada;
+    private long travelTime;
+    private double tempoRestante;
 
     private double TEMPO;
 
@@ -113,14 +119,16 @@ public class GerenciaDados {
 
     public synchronized double calculateTimeDifference() {
         double tempoDisp = (tempoDesejado - calculaTempoDeslocamento());
-        return tempoDisp/(60); //em minutos;
+        tempoRestante =  tempoDisp/(60); //em minutos;
+        return tempoRestante;
     }
 
 
     public synchronized long calculaTempoDeslocamento(){
         Dados ponto = dados.peek();
         long tempoAtual = ponto.getTime();
-        return (tempoAtual - tempoIncio)/(1000); //em seg
+        travelTime =  (tempoAtual - tempoIncio)/(1000); //em seg
+        return travelTime;
     }
 
     public synchronized double calculaDistanciaTotalPercorrida(){
@@ -149,7 +157,8 @@ public class GerenciaDados {
                         Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        return (RAIO_TERRA * c);
+        distanciaPercorrida = (RAIO_TERRA * c);
+        return distanciaPercorrida;
 
     }
 
@@ -157,12 +166,13 @@ public class GerenciaDados {
         double distancia = calculaDistanciaTotalPercorrida();
         double tempo = (double)calculaTempoDeslocamento()/(60*60);
         if(distancia==0){
-            return 0.0;
+            velMedia = 0.0;
         }
         else{
             double v = distancia / tempo;
-            return v;
+            velMedia = v;
         }
+        return velMedia;
 
         //return (double) calculaDistanciaTotalPercorrida()/((calculaTempoDeslocamento()/(60*60)));
 
@@ -174,13 +184,14 @@ public class GerenciaDados {
             double tempoDisp = (tempoDesejado - calculaTempoDeslocamento());
             tempoDisp = tempoDisp/(60*60);
             //TEMPO = TEMPO/(100);
-            return distanciaFalta/tempoDisp;
+            velRecomendada = distanciaFalta/tempoDisp;
         }
 
         else{
             //tempoIncio = tempoIncio / (60 * 60);
-            return distanciaTotal / (tempoDesejado/(60*60));
+            velRecomendada = distanciaTotal / (tempoDesejado/(60*60));
         }
+        return velRecomendada;
 
     }
 
@@ -235,6 +246,34 @@ public class GerenciaDados {
 
         return temp1 - temp2;
 
+    }
+
+    public double calculaDistanciaFalta(){
+        return distanciaTotal-distanciaPercorrida;
+    }
+
+    public double getConsumo() {
+        return consumo;
+    }
+
+    public double getDistanciaPercorrida() {
+        return distanciaPercorrida;
+    }
+
+    public double getVelMedia() {
+        return velMedia;
+    }
+
+    public double getVelRecomendada() {
+        return velRecomendada;
+    }
+
+    public long getTravelTime() {
+        return travelTime;
+    }
+
+    public double getTempoRestante() {
+        return tempoRestante;
     }
 
 

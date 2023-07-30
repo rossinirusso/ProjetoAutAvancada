@@ -238,6 +238,10 @@ public class JsonSaver extends Thread {
         return Base64.decode(keyStr.toString(), Base64.DEFAULT);
     }
 
+    public void Stop(){
+        chave = false;
+    }
+
     @Override
     public void run(){
         while (chave){
