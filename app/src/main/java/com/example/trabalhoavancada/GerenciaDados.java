@@ -17,10 +17,14 @@ public class GerenciaDados {
 
     private Reconciliacao reconciliacao;
 
+
+
     private static final int RAIO_TERRA = 6371;
     private static long tempoIncio;
 
     private static  double distanciaTotal; //em km
+
+    private static double distanciaCross;
     private static long tempoDesejado; //em hora
     private static int tipo;
 
@@ -192,6 +196,7 @@ public class GerenciaDados {
             tempoDisp = tempoDisp/(60*60);
             //TEMPO = TEMPO/(100);
             velRecomendada = distanciaFalta/tempoDisp;
+
         }
 
         else{

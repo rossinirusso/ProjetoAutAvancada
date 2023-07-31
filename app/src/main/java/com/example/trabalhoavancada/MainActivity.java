@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private ThreadGerenciaDados threadGerenciaDadosV2;
     private ServicoTransporte servicoTransporte;
 
-    private Reconciliacao reconciliacao;
+    private ThreadReconcilia threadReconcilia;
 
     private JsonSaver jsonSaver;
     private MemComp m = new MemComp();
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private DataReader dataReader = new DataReader();
     private DataSaver dataSaver = new DataSaver();
     private TextView tvLatitude,tvLongitude,tvTempo,tvDistanciaPercorrida,tvTimeDifference, tvTravelTime, tvVelMedia, tvTravelDistance, tvVelRecomendada,tvConsumo, tvMotoristaV1,tvMotoristaV2, tvCargaV1, tvCargaV2,tvPassageirosV1,tvPassageirosV2;
-    private EditText edDistancia, edConsumo, edTempo, edmotorista, edPassageiros, edCargas;
+    private EditText edDistancia, edConsumo, edTempo, edmotorista, edPassageiros, edCargas, edPontoCross;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         edmotorista = (EditText)findViewById(R.id.editTextMotorista);
         edPassageiros = (EditText)findViewById(R.id.editTextPassageiros);
         edCargas = (EditText)findViewById(R.id.editTextCargas);
+        edPontoCross = (EditText)findViewById(R.id.editTextDistanceCross);
         tvMotoristaV1 = (TextView)findViewById(R.id.textViewMotoristaVeiculo1);
         tvMotoristaV2 = (TextView)findViewById(R.id.textViewMotoristaVeiculo2);
         tvCargaV1 = (TextView)findViewById(R.id.textViewCargasVeiculo1);
@@ -82,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
     public void getLocation(View view) throws InterruptedException {
         ThreadDataSaver threadDataSaver = new ThreadDataSaver(this);
         threadDataSaver.start();
-        jsonSaver = new JsonSaver(this,true);
-        jsonSaver.start();
+        //jsonSaver = new JsonSaver(this,true);
+        //jsonSaver.start();
 
     }
 
@@ -109,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
         threadGerenciaDadosV2.start();
         threadMostraDados = new ThreadMostraDados(this,true,tvTimeDifference,tvTravelTime,tvVelMedia,tvTravelDistance,tvVelRecomendada,tvConsumo,servicoTransporte,tvMotoristaV1,tvMotoristaV2, tvCargaV1, tvCargaV2,tvPassageirosV1,tvPassageirosV2);
         threadMostraDados.start();
-        reconciliacao = new Reconciliacao(true);
-        reconciliacao.start();
+        threadReconcilia = new ThreadReconcilia(true);
+        threadReconcilia.start();
 
 
     }
@@ -121,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         threadGerenciaDados.Stop();
         jsonSaver.Stop();
         threadGerenciaDadosV2.Stop();
+        threadReconcilia.Stop();
 
     }
 

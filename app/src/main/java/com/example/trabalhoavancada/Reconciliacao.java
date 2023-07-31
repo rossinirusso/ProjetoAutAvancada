@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class Reconciliacao extends Thread {
+public class Reconciliacao  {
 
     private GerenciaDados g = new GerenciaDados();
     private GerenciaDados g2 = new GerenciaDados();
@@ -25,11 +25,17 @@ public class Reconciliacao extends Thread {
 
     private static double intervalo;
 
+    private static double velRecomendada;
+
+
     private double P1;
     private double P2;
     private double P3;
     private double P4;
     private double P0;
+
+    private static double TEMPO;
+
 
 
    /* public void setVeiculo1(){
@@ -72,7 +78,7 @@ public class Reconciliacao extends Thread {
     public double tempoDisponivel(){
         velMediaVeiculo2 = g2.getVelMedia();
         distanciaFaltaVeiculo2 = g2.calculaDistanciaFalta();
-        double tempodisp = velMediaVeiculo2/distanciaFaltaVeiculo2;
+        double tempodisp = (velMediaVeiculo2/distanciaFaltaVeiculo2)/60;
 
         if(tempodisp==0){
             return g.getTempoDesejado()/60;
@@ -93,27 +99,27 @@ public class Reconciliacao extends Thread {
 
         if(g.calcularDistancia() > intervalo && g.calcularDistancia()<(2*intervalo)){
             if(P1==0) {
-                P1 = g.getTravelTime();
+                P1 = (g.getTravelTime()*3600)/60;
             }
         }
 
         else if(g.calcularDistancia() > 2*intervalo && g.calcularDistancia()<(3*intervalo)){
             if(P2==0) {
-                P2 = g.getTravelTime();
+                P2 = (g.getTravelTime()*3600)/60;
             }
 
         }
 
         else if(g.calcularDistancia() > 3*intervalo && g.calcularDistancia()<(4*intervalo)){
             if(P3==0) {
-                P3 = g.getTravelTime();
+                P3 = (g.getTravelTime()*3600)/60;
             }
 
         }
 
         else if(g.calcularDistancia() > 4*intervalo && g.calcularDistancia()<(5*intervalo)){
             if(P4==0) {
-                P4 = g.getTravelTime();
+                P4 = (g.getTravelTime()*3600)/60;
             }
 
         }
@@ -129,12 +135,11 @@ public class Reconciliacao extends Thread {
 
     ArrayList<Dados> reconciliacao;
 
-    public Reconciliacao (boolean chave){
+    public Reconciliacao (){
         //this.reconciliacao = reconciliacao;
-        this.chave = chave;
     }
 
-    public double setRec(){
+    public void setRec(){
         y = new double[]{P0,P1,P2,P3,P4};
         v = new double[5];
         A = new double[1][5];
@@ -158,29 +163,35 @@ public class Reconciliacao extends Thread {
 
         //teste
         double distanciaFalta = distanciaTotal - g.calculaDistanciaTotalPercorrida();
-        double TEMPO = (recPronto.get(j)/60)*10000;
-        double velRecomendada = distanciaFalta/TEMPO;
+        TEMPO = (recPronto.get(j)/60)*10000;
+        velRecomendada = distanciaFalta/TEMPO;
 
-        return  recPronto.get(j);
+        try {
+            m.escreveRec(this);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
-    public void Stop(){
-        chave = false;
+    public double getTEMPO(){
+        return TEMPO;
     }
 
-    @Override
-    public void run() {
-        while (chave) {
-            getGerenciaDadosV1();
-            getGerenciaDadosV2();
-            setDistanciaTotal();
-            if(g2.VerificaPilha() && g.VerificaPilha()){
-            setInvervalos();
-            setRec();
-            }
+    public double getVelRecomendada(){
+        return velRecomendada;
+    }
 
+    public boolean verificaPilhas (){
+        if(g2.VerificaPilha() && g.VerificaPilha()){
+            return true;
         }
+        else{
+            return false;
         }
+    }
+
 
 
 }

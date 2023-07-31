@@ -7,6 +7,8 @@ public class ThreadMostraDados extends Thread {
 
     private GerenciaDados g;
     private GerenciaDados g2;
+
+    private Reconciliacao rec = new Reconciliacao();
     private Context context;
     private DataReader dataReader = new DataReader();
     private  MemComp m = new MemComp();
@@ -50,6 +52,7 @@ public class ThreadMostraDados extends Thread {
         while (chave) {
             g = servicoTransporte.getGerenciaDadosVeiculo1();
             g2 = servicoTransporte.getGerenciaDadosVeiculo2();
+
             if (g != null){
                 if (g.VerificaPilha()) {
                     d = servicoTransporte.getVeiculo1();
@@ -57,7 +60,8 @@ public class ThreadMostraDados extends Thread {
 
                     double distanciaPercorrida = g.getDistanciaPercorrida();
                     double velMedia = g.getVelMedia();
-                    double velRecomendada = g.getVelRecomendada();
+                    //double velRecomendada = g.getVelRecomendada();
+                    double velRecomendada = rec.getVelRecomendada();
                     double consumo = g.getConsumo();
 
                     double temp = g.getTempoRestante();
