@@ -50,12 +50,12 @@
         android:layout_below="@+id/editTextDistanceCross"
         android:text="ID Serviço de transporte" />
 
-    <EditText
-        android:id="@+id/editIdTransporte"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewIdTranporte"
-        android:inputType="numberDecimal" />
+        <EditText
+            android:id="@+id/editIdTransporte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewIdTranporte"
+            android:inputType="text" />
 
     <TextView
         android:id="@+id/textViewTravelTime"

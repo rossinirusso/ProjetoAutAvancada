@@ -117,5 +117,7 @@ public class ServicoTransporte {
         this.cargas = splitNames(cargas);
     }
 
-
+    public void setId(String id) {
+        this.id = id;
+    }
 }

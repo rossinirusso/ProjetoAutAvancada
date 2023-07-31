@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private DataReader dataReader = new DataReader();
     private DataSaver dataSaver = new DataSaver();
     private TextView tvLatitude,tvLongitude,tvTempo,tvDistanciaPercorrida,tvTimeDifference, tvTravelTime, tvVelMedia, tvTravelDistance, tvVelRecomendada,tvConsumo, tvMotoristaV1,tvMotoristaV2, tvCargaV1, tvCargaV2,tvPassageirosV1,tvPassageirosV2;
-    private EditText edDistancia, edConsumo, edTempo, edmotorista, edPassageiros, edCargas, edPontoCross;
+    private EditText edDistancia, edConsumo, edTempo, edmotorista, edPassageiros, edCargas, edPontoCross, edIdServico;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         tvCargaV2 = (TextView)findViewById(R.id.textViewCargasVeiculo2);
         tvPassageirosV1 = (TextView)findViewById(R.id.textViewPassageirosVeiculo1);
         tvPassageirosV2 = (TextView)findViewById(R.id.textViewPassageirosVeiculo2);
+        edIdServico = (EditText) findViewById(R.id.editIdTransporte);
 
 
 
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         servicoTransporte.addMotorista(edmotorista.getText().toString());
         servicoTransporte.addPassageiros(edPassageiros.getText().toString());
         servicoTransporte.addCargas(edCargas.getText().toString());
+        servicoTransporte.setId(edIdServico.getText().toString());
         g.SetTempoInico(System.currentTimeMillis());
         //g.SetTipoVeiculo(getIntFromEditText(edConsumo));
         g.SetDistanciaTotal(getDecimalFromEditText(edDistancia));
