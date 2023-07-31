@@ -90,7 +90,12 @@ public class Reconciliacao  {
     }
 
     public void setDistanciaTotal(){
+        if(g.getDistanciaCross() < g.getDistanciaPercorrida()){
         distanciaTotal = g.getDistanciaTotal();
+        }
+        else{
+            distanciaTotal = g.getDistanciaCross();
+        }
     }
 
     public void setInvervalos(){

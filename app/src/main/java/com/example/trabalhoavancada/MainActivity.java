@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         //g.SetTipoVeiculo(getIntFromEditText(edConsumo));
         g.SetDistanciaTotal(getDecimalFromEditText(edDistancia));
         g.SetTempoDesejado(getLongFromEditText(edTempo));
+        g.setDistanciaCross(getDecimalFromEditText(edPontoCross));
 
     }
 

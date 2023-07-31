@@ -301,7 +301,13 @@ public class GerenciaDados {
 
 
     public double calculaDistanciaFalta(){
-        return distanciaTotal-distanciaPercorrida;
+        if(distanciaPercorrida > distanciaCross) {
+            return distanciaTotal - distanciaPercorrida;
+        }
+
+        else{
+            return distanciaCross - distanciaPercorrida;
+        }
     }
 
     public double getConsumo() {
@@ -334,6 +340,14 @@ public class GerenciaDados {
 
     public double getTempoDesejado(){
         return tempoDesejado;
+    }
+
+    public double getDistanciaCross(){
+        return distanciaCross;
+    }
+
+    public void setDistanciaCross(double distanciaCross){
+        this.distanciaCross = distanciaCross;
     }
 
 
